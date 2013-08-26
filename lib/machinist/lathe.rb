@@ -35,6 +35,10 @@ module Machinist
     undef_method :id   if respond_to?(:id)
     undef_method :type if respond_to?(:type)
 
+     def attribute_assigned?(key) #:nodoc:
+      @assigned_attributes.has_key?(key.to_sym)
+    end
+
   protected
 
     def make_attribute(attribute, args, &block) #:nodoc:
@@ -56,9 +60,7 @@ module Machinist
       @object.send("#{key}=", value)
     end
 
-    def attribute_assigned?(key) #:nodoc:
-      @assigned_attributes.has_key?(key.to_sym)
-    end
+
 
     def raise_argument_error(attribute) #:nodoc:
       raise ArgumentError.new("Invalid arguments to attribute #{attribute} in blueprint")

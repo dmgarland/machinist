@@ -21,6 +21,12 @@ module Machinist
       @blueprints[name]
     end
 
+    def plan(*args)
+      decode_args_to_make(*args) do |blueprint, attributes|
+        blueprint.plan(attributes)
+      end
+    end
+
     # Construct an object from a blueprint.
     #
     # :call-seq:

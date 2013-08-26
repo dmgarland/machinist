@@ -29,6 +29,17 @@ module Machinist
       lathe.object
     end
 
+    def plan(attributes = {})
+      lathe = lathe_class.new(@klass, new_serial_number, attributes)
+
+      lathe.instance_eval(&@block)
+      each_ancestor {|blueprint| lathe.instance_eval(&blueprint.block) }
+
+      attributes = lathe.object.attributes
+      attributes.delete_if { |key, val| !lathe.attribute_assigned? key }
+      attributes
+    end
+
     # Returns the Lathe class used to make objects for this blueprint.
     #
     # Subclasses can override this to substitute a custom lathe class.
